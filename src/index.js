@@ -2,7 +2,7 @@ const fs = require("fs");
 const path = require("path");
 
 const cuestion = process.openStdin();
-write()
+
 cuestion.on("data", async data => {
     data = data.toString().trim();
     if (!data.length) return write();
@@ -17,7 +17,7 @@ cuestion.on("data", async data => {
         return;
     };
     let plantilla = fs.readFileSync(path.join(__dirname, "plantillas", data)).toString();
-    let regexp = /\${.+}/gmi;
+    let regexp = /\${.+}/gmis;
     let matched = plantilla.match(regexp);
     if (!matched) {
         console.log("no se encontro ninguna coincidencia en el archivo");
@@ -26,7 +26,7 @@ cuestion.on("data", async data => {
     }
     matched.map(async string => {
         try {
-            let evaluado = eval(string.replace(/\$|{|}/g, ""));
+            let evaluado = eval(string.replace(/\${|}$/g, ""));
             plantilla = plantilla.replace(string, evaluado);
         } catch (err) {
             console.log(`error en ${string}`);
@@ -42,3 +42,5 @@ cuestion.on("data", async data => {
 function write() {
     process.stdout.write("->");
 }
+
+write()
