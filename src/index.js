@@ -18,8 +18,13 @@ cuestion.on("data", async data => {
     };
     let plantilla = fs.readFileSync(path.join(__dirname, "plantillas", data)).toString();
     let regexp = /\${.+}/gmi;
-    console.log(plantilla.match(regexp))
-    plantilla.match(regexp).map(async string => {
+    let matched = plantilla.match(regexp);
+    if (!matched) {
+        console.log("no se encontro ninguna coincidencia en el archivo");
+        write();
+        return;
+    }
+    matched.map(async string => {
         try {
             let evaluado = eval(string.replace(/\$|{|}/g, ""));
             plantilla = plantilla.replace(string, evaluado);
