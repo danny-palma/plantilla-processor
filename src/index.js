@@ -7,7 +7,7 @@ cuestion.on("data", async data => {
     data = data.toString().trim().split("=>");
     if (!data[0].length) return write();
     if (!data[0].endsWith(".txt")) {
-        data[0] =data[0].trim().concat(".txt");
+        data[0] = data[0].trim().concat(".txt");
     }
     if (!fs.existsSync(path.join(__dirname, "plantillas", data[0]))) {
         console.log("ese archivo no existe");
@@ -19,11 +19,12 @@ cuestion.on("data", async data => {
     let matched = plantilla.match(regexp);
     if (!matched) {
         console.log("no se encontro ninguna coincidencia en el archivo");
+        fs.writeFileSync(path.join(__dirname, "plantillas", `${data[0].replace(".txt", "-replaced")}${data[1] || ".txt"}`), plantilla, { encoding: "utf8" });
         write();
         return;
     }
     matched.map(async string => {
-        if(string.startsWith("\\"))return;
+        if (string.startsWith("\\")) return;
         try {
             let evaluado = eval(string.replace(/\${|}$/g, ""));
             plantilla = plantilla.replace(string, evaluado);
