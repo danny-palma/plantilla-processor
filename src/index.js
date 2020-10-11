@@ -9,6 +9,8 @@ cuestion.on("data", async data => {
     existeDirectorio()
     data = data.toString().trim().split("=>");
     if (!data[0].length) return write();
+    data[0] = data[0].trim()
+    data[1] = data[1] ? data[1].trim() : null;
     if (!data[0].endsWith(".txt")) {
         data[0] = data[0].trim().concat(".txt");
     }
