@@ -3,7 +3,10 @@ const path = require("path");
 
 const cuestion = process.openStdin();
 
+existeDirectorio()
+
 cuestion.on("data", async data => {
+    existeDirectorio()
     data = data.toString().trim().split("=>");
     if (!data[0].length) return write();
     if (!data[0].endsWith(".txt")) {
@@ -38,6 +41,13 @@ cuestion.on("data", async data => {
     console.log("procesado correctamente");
     write();
 })
+
+function existeDirectorio() {
+    if(!fs.existsSync(path.join(__dirname, "plantillas"))){
+        console.log("creando el directorio \"plantillas\" ahi es donde se va a revisar las plantillas a procesar")
+        fs.mkdirSync(path.join(__dirname, "plantillas"))
+    }    
+}
 
 function write() {
     process.stdout.write("->");
