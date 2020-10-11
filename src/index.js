@@ -20,7 +20,7 @@ cuestion.on("data", async data => {
         return;
     };
     let plantilla = fs.readFileSync(path.join(__dirname, "plantillas", data[0])).toString();
-    let regexp = /(\\)?\${.+}/gmis;
+    let regexp = /(\\)?\${.+}/gs;
     let matched = plantilla.match(regexp);
     if (!matched) {
         console.log("no se encontro ninguna coincidencia en el archivo");
