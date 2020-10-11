@@ -4,19 +4,17 @@ const path = require("path");
 const cuestion = process.openStdin();
 
 cuestion.on("data", async data => {
-    data = data.toString().trim();
-    if (!data.length) return write();
-    if (!data.endsWith(".txt")) {
-        console.log("no termina en .txt");
-        write();
-        return;
+    data = data.toString().trim().split("=>");
+    if (!data[0].length) return write();
+    if (!data[0].endsWith(".txt")) {
+        data[0] =data[0].trim().concat(".txt");
     }
-    if (!fs.existsSync(path.join(__dirname, "plantillas", data))) {
+    if (!fs.existsSync(path.join(__dirname, "plantillas", data[0]))) {
         console.log("ese archivo no existe");
         write();
         return;
     };
-    let plantilla = fs.readFileSync(path.join(__dirname, "plantillas", data)).toString();
+    let plantilla = fs.readFileSync(path.join(__dirname, "plantillas", data[0])).toString();
     let regexp = /(\\)?\${.+}/gmis;
     let matched = plantilla.match(regexp);
     if (!matched) {
@@ -35,7 +33,7 @@ cuestion.on("data", async data => {
             process.exit();
         }
     })
-    fs.writeFileSync(path.join(__dirname, "plantillas", `${data.replace(".txt", "-replaced")}.txt`), plantilla, { encoding: "utf8" });
+    fs.writeFileSync(path.join(__dirname, "plantillas", `${data[0].replace(".txt", "-replaced")}${data[1] || ".txt"}`), plantilla, { encoding: "utf8" });
     console.log("procesado correctamente");
     write();
 })
